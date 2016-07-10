@@ -48,8 +48,10 @@ def ajaxSubmit():
     alist = eval("".join(postRequest.getlist('answer')))
     if alist == []:
         return json.dumps({"session_info": SESSION_INFO.toJson()})
-    dna.answer(alist)
-    dna.newQ()
+    if dna.currentquestion != -1:
+        dna.answer(alist)
+        dna.newQ()
+
     if dna.currentquestion == -1 or dna.currentquestion == "error":
         print "error got"
         SESSION_INFO.result = dna.currentList
@@ -65,10 +67,12 @@ def ajaxSubmit():
 @app.route("/centroBackFollow", methods=['GET', 'POST'])
 def ajaxBack():
     dna.db.restore_data(len(dna.answerList))
-    dna.answerList.pop(-1)
+
     if len(dna.qb.askedq) != 0:
+        dna.answerList.pop(-1)
         qbnow = dna.qb.askedq[-1]
-        dna.qb.pop(-1)
+        print dna.qb.askedq
+        dna.qb.askedq.pop(-1)
         dna.currentquestion = dna.qb.getQ(qbnow)
         SESSION_INFO.question = dna.currentquestion.toQestion()
     return json.dumps({"session_info": SESSION_INFO.toJson()})
@@ -87,7 +91,16 @@ def redirectSubmit():
 
     rawText = str(postRequest.items()[0][1])
     collist = key_words_filter(rawText)
-    dna.db.fileter_cato(collist,0)
+    if len(collist) != 0:
+        dna.db.fileter_cato(collist,0)
+    if dna.currentquestion.qid == -1:
+        print "error got"
+        SESSION_INFO.result = dna.currentList
+        q = Question()
+        q.qid = "-1"
+        SESSION_INFO.question = q
+        SESSION_INFO.answerlist = dna.answerList
+
 
 
 
@@ -157,4 +170,4 @@ def key_words_filter(raw_txt):
 
 if __name__ == "__main__":
 
-    app.run(host="0.0.0.0", port=5065)
+    app.run(host="0.0.0.0", port=5025)
