@@ -21,3 +21,27 @@ display: inline-block;
     border: 1px solid #ccc;
     -moz-appearance: none;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer .container {
+	margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+footer .progress {
+	border-radius: 0px;
+	margin-bottom: 0px;
+	width: 100%;
+}
+
+.progress-bar {
+  -webkit-transition: none !important;
+  transition: none !important;
+  height: 10px;
+}
