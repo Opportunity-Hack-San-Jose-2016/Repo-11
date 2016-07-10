@@ -3,45 +3,54 @@ var RADIO_FORM_CLASS = "radio-form";
 var TEXT_FORM_CLASS = "text-form";
 var SELECT_FORM_CLASS = "select-form";
 
-$(document).ready(function(){
+$(document).ready(function() {
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "\""));
-	console.log("ready:");
-	console.log(SESSION_INFO);
-	setQuestionForm(SESSION_INFO);
-	
+	if(SESSION_INFO.question.qid=="-1") {
+		redirectToStartPage();
+	}else{
+		setQuestionForm(SESSION_INFO);
+	}
 });
 
-$("#forms").on('click', '.submitButton', function(){
+$("#forms").on('click', '.submitButton', function() {
 	submitForm($(this));
 })
 
-function submitForm($submitButton){
+$("#forms").on('click', '.retrieveButton', function() {
+	retrieveForm($(this));
+	if($('form').length==0) {
+		redirectToStartPage();
+	}
+})
+
+function submitForm($submitButton) {
 	// Initiate Variables With Form Content
 	// checkbox
 	var $currentForm = $('.current-form');
 	var qid = $currentForm.attr('qid');
 	var answerList = [];
-	if($currentForm.hasClass(CHECKBOX_FORM_CLASS)){
-		$.each($currentForm.find('input:checked'), function(){
+	if($currentForm.hasClass(CHECKBOX_FORM_CLASS)) {
+		$.each($currentForm.find('input:checked'), function() {
 			answerList.push($(this).val());
 		});
-	}else if($currentForm.hasClass(RADIO_FORM_CLASS)){
-		$.each($currentForm.find('input:checked'), function(){
+	}else if($currentForm.hasClass(RADIO_FORM_CLASS)) {
+		$.each($currentForm.find('input:checked'), function() {
 			answerList.push($(this).val());
 		});
-	}else if($currentForm.hasClass(TEXT_FORM_CLASS)){
+	}else if($currentForm.hasClass(TEXT_FORM_CLASS)) {
 		answerList.push($currentForm.find('.answerTextArea').val());
-	}else if($currentForm.hasClass(SELECT_FORM_CLASS)){
-		$.each($currentForm.find('option:selected'), function(){
+	}else if($currentForm.hasClass(SELECT_FORM_CLASS)) {
+		$.each($currentForm.find('option:selected'), function() {
 			answerList.push($(this).val());
 		});
 	}else{
 		// BUG
 	}
-	if(answerList.length==0){
+	console.log($currentForm);
+	if(answerList.length==0) {
 		$submitButton.addClass("btn-error");
-		$submitButton.addClass('.disabled');
+		$submitButton.addClass('disabled');
 		$('.alert').fadeIn();
 		console.log($('.alert'));
 	}else{
@@ -51,7 +60,7 @@ function submitForm($submitButton){
 				'id': "qid",
 				'answer': JSON.stringify(answerList)
 			},
-			function(data){
+			function(data) {
 				disablePreviousFormsAndRemoveSubmitButton();
 				setQuestionForm(data.session_info);
 			},
@@ -71,7 +80,7 @@ function setQuestionForm(data) {
 		updateProgressBar(progressBarWidth);
 	}
 	console.log(question);
-	switch(question.answer_type){
+	switch(question.answer_type) {
 		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, data.callback); break;
 		case "radio": addRadioForm(question.qid, question.text, question.options, data.callback); break;
 		case "text": addTextAreaForm(question.qid, question.text, data.callback); break;
@@ -82,7 +91,7 @@ function setQuestionForm(data) {
 }
 
 var progressBarWidth = 0;
-function updateProgressBar(progress){
+function updateProgressBar(progress) {
 	$(".progress-bar").animate({
     width: "{0}%".format(progress)
   }, 500);
@@ -91,11 +100,12 @@ function updateProgressBar(progress){
 function disablePreviousFormsAndRemoveSubmitButton() {
 	$('.current-form').removeClass('current-form');
 	$('.submitButton').remove();
+	$('.retrieveButton').remove();
 	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
 	$('.alert').remove();
 }
 
-function addCompleteForm(){
+function addCompleteForm() {
 	var $completeForm = $completeFormHTML();
 	$('#forms').append($completeForm);
 }
@@ -104,7 +114,7 @@ function addCheckboxForm(qid, text, options, callback) {
 	var $form = $formHTML(callback, CHECKBOX_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
-	$.each(options, function(index, value){
+	$.each(options, function(index, value) {
 		$formGroup.append($checkBoxHTML(value, value));
 	});
 	$form.append($formGroup);
@@ -115,7 +125,7 @@ function addRadioForm(qid, text, options, callback) {
 	var $form = $formHTML(callback, RADIO_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
-	$.each(options, function(index, value){
+	$.each(options, function(index, value) {
 		$formGroup.append($radioHTML(value, value));
 	});
 	$form.append($formGroup);
@@ -148,13 +158,29 @@ function getSelectedcheckboxArray() {
 	return checkboxSelected;
 }
 
-function addNewForm($form){
+function retrieveForm(retrieveButton) {
+	var $currentForm = $('.current-form');
+	$currentForm.fadeOut().remove();
+	var $lastForm = $('form').not('.current-form').last();
+	$lastForm.addClass('current-form');
+	$lastForm.find('input, textarea, button, select').removeAttr('disabled');
+	$lastForm.append($validationAlertHTML());
+	$lastForm.append($retrieveLastButtonHTML());
+	$lastForm.append($submitButtonHTML());
+}
+
+function addNewForm($form) {
 	$form.addClass('current-form');
 	$form.attr('style','display:none;');
 	$form.append($validationAlertHTML());
-	$form.append($buttonHTML());
+	$form.append($retrieveLastButtonHTML());
+	$form.append($submitButtonHTML());
 	$("#forms").append('<hr>');
 	$form.appendTo($("#forms")).fadeIn();
+}
+
+function redirectToStartPage() {
+	window.location.replace("http://"+window.location.host);
 }
 
 function $checkBoxHTML(value, text) {
@@ -178,8 +204,8 @@ function $textAreaHTML() {
 function $formSelectHTML(options) {
 	var $selectRowWrapper = $rowWrapperHTML()
 	var $select = $('<select class="c-select col-xs-12 answerSelect"></select>');
-	$.each(options, function(index, value){
-		if(index==0){
+	$.each(options, function(index, value) {
+		if(index==0) {
 			$select.append($('<option selected value={0}>{0}</option>'.format(value)));
 		}else{
 			$select.append($('<option value={0}>{0}</option>'.format(value)));
@@ -189,31 +215,35 @@ function $formSelectHTML(options) {
 	return $selectRowWrapper;
 }
 
-function $buttonHTML(){
+function $submitButtonHTML() {
 	return $('<button type="button" class="btn btn-warning submitButton">Submit</button>');
 }
 
-function $completeFormHTML(){
+function $retrieveLastButtonHTML() {
+	return $('<button type="button" class="btn btn-default retrieveButton">Retrieve</button>');
+}
+
+function $completeFormHTML() {
 	return $('<form action="/finalresult" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">See the result</button></div></form>');
 }
 
-function $formGroupHTML(){
+function $formGroupHTML() {
 	return $('<div class="form-group"></div>');
 }
 
-function $rowWrapperHTML(){
+function $rowWrapperHTML() {
 	return $('<div class="row"></div>')
 }
 
-function $formHTML(action, formClasses, qid){
+function $formHTML(action, formClasses, qid) {
 	return $('<form action="{0}" class="{1}" qid="{2}" data-toggle="validator">'.format(action, formClasses, qid));
 }
 
-function $questionTitleHTML(text){
+function $questionTitleHTML(text) {
 	return $('<p class="lead">{0}</p>'.format(text));
 }
 
-function $validationAlertHTML(){
+function $validationAlertHTML() {
 	return $('<div class="alert alert-danger" style="display:none;">Please tell us something.</div>');
 }
 

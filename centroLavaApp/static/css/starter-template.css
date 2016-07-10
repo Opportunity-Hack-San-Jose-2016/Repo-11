@@ -63,3 +63,7 @@ footer .progress {
 footer .row{
 	padding: 20px 20px 0px 20px;
 }
+
+.retrieveButton{
+	margin-right: 5px;
+}
