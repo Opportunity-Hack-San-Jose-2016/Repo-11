@@ -46,12 +46,18 @@ function setQuestionForm(data) {
 }
 
 $("#forms").on('click', '.submitButton', function(){
-	$('.current-form').removeClass('current-form');
+	disablePreviousFormsAndRemoveSubmitButton();
 	addCheckboxForm("This is a checkbox question", ["checkbox1","checkbox2"], "/url");
 	adRadioForm("This is a radio question", ["option1","option2"], "/url");
 	addTextAreaForm("This is a text question", "/url");
 	addSelectForm("This is a dropdown question", ["list1","list2","list3"], "/url");
 })
+
+function disablePreviousFormsAndRemoveSubmitButton() {
+	$('.current-form').removeClass('current-form');
+	$('.submitButton').remove();
+	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
+}
 
 function addCheckboxForm(text, options, callback) {
 	var $form = $formHTML(callback, "checkbox-form-group");
