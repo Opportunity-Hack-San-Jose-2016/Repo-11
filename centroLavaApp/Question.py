@@ -4,7 +4,7 @@ class Question:
         self.qid = qid
         self.questionText = text
         self.answerType = type
-        if type not in ["checkbox", "radio", "dropdown"]:
+        if type not in ["checkbox", "radio", "select"]:
             self.options = []
         else:
             self.options = options

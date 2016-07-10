@@ -36,7 +36,7 @@ class LavaSession(object):
         """
         return ''.join(random.choice(chars) for _ in range(size))
 
-    def toJson(self):
+    def toJson(self, results=[]):
         return {
             "session_id": self.sid,
             "username": self.username,
@@ -45,5 +45,5 @@ class LavaSession(object):
             "question": self.question.toJson() if self.question else {},
             "location": self.location,
             "callback": self.postCallback,
-            "result": []
+            "results": results
         }

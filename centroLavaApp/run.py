@@ -35,6 +35,11 @@ def redirectSubmit():
     return render_template('question.html', session_info=SESSION_INFO.toJson())
 
 
+@app.route("/submitResult")
+def submitResult():
+    return render_template('finalresult.html', session_info=SESSION_INFO.toJson())
+
+
 @app.route("/")
 @app.route("/index")
 def index():
