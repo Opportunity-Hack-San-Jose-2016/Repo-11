@@ -1,5 +1,104 @@
 {
   "0": {
+    "rawstring": "In which way do you prefer to approach the service, online or offline?",
+    "cols": [
+      "Coaching & Advising",
+      "Workshops / Training",
+      "Online Tools"
+    ],
+    "iscolfilter": true,
+    "potentialanswers": {
+      "Online": [
+        "Online Tools"
+      ],
+      "Offline": [
+        "Coaching & Advising",
+        "Workshops / Training"
+      ]
+    },
+    "isradio": false,
+    "descriptions":{
+      "Online":"Online DESC....",
+      "Offline":"Offline DESC...."
+    },
+    "nextq":{
+      "Online": 2,
+      "Offline": 1
+    }
+  },
+  "1": {
+    "rawstring": "Do you prefer to discuss your problems with other entrepreneurs or just with experts?",
+    "cols": [
+      "Coaching & Advising",
+      "Workshops / Training"
+    ],
+    "iscolfilter": true,
+    "potentialanswers": {
+      "Discuss with other entrepreneurs: we offer Workshops / Training in which you can interact and brainstorm with other entrepreneurs": [
+        "Coaching & Advising"
+      ],
+      "Talk to experts: we have experts coaching & advising you with your problems": [
+        "Workshops / Training"
+      ]
+    },
+    "isradio": true,
+    "nextq":{
+      "Discuss with other entrepreneurs: we offer Workshops / Training in which you can interact and brainstorm with other entrepreneurs": 2,
+      "Talk to experts: we have experts coaching & advising you with your problems": 2
+    }
+  },
+  "2": {
+    "rawstring": "Any language preference for the service?",
+    "cols": [
+      "English",
+      "Spanish",
+      "Mandarin",
+      "Vietnamese"
+    ],
+    "iscolfilter": true,
+    "potentialanswers": {
+      "English": [
+        "English"
+      ],
+      "Spanish": [
+        "Spanish"
+      ],
+      "Mandarin": [
+        "Mandarin"
+      ],
+      "Vietnamese": [
+        "Vietnamese"
+      ]
+    },
+    "isradio": true,
+    "nextq":{
+      "English": 4,
+      "Spanish": 4,
+      "Mandarin": 4,
+      "Vietnamese": 4
+
+    }
+  },
+  "3": {
+    "rawstring": "Do you want to spend money on the service?",
+    "cols": [
+      "Cost"
+    ],
+    "iscolfilter": false,
+    "potentialanswers": {
+      "Paid": [
+        "Cost"
+      ],
+      "Traded": [
+        "Cost"
+      ],
+      "Free": [
+        "Cost"
+      ]
+    },
+    "isradio": true
+  },
+  "4": {
     "rawstring": "Please Choose the industry of your business",
     "cols": [
       "Agriculture",
@@ -11,18 +110,34 @@
     ],
     "iscolfilter": true,
     "potentialanswers": {
-      " a Service": [
-        "Services",
-        "Healthcare",
-        "Open Entry"
+      "Agriculture": [
+        "Agriculture"
       ],
-      "a Product": [
-        "Agriculture",
-        "Food and Beverage",
+      "Food and Beverage": [
+        "Food and Beverage"
+      ],
+      "Services": [
+        "Services"
+      ],
+      "Products": [
         "Products"
+      ],
+      "Healthcare": [
+        "Healthcare"
+      ],
+      "Open Entry": [
+        "Open Entry"
       ]
-
     },
-    "isradio": true
+    "isradio": true,
+    "nextq":{
+      "Agriculture": -1,
+      "Food and Beverage": -1,
+      "Services": -1,
+      "Products": -1,
+      "Healthcare": -1,
+      "Open Entry": -1
+
+    }
   }
 }

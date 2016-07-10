@@ -12,7 +12,7 @@ class Question:
 
     def toJson(self):
         return {
-            "id": self.qid,
+            "qid": self.qid,
             "text": self.questionText,
             "answer_type": self.answerType,
             "options": self.options,

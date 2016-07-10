@@ -3,6 +3,7 @@ from LavaSession import LavaSession
 from DNA import DNA
 from datamodel import database
 from QuestionBaseInterface import QuestionBaseInterface
+from Question import Question
 app = Flask(__name__)
 
 ############################ Session Init Info ############################
@@ -10,12 +11,14 @@ app = Flask(__name__)
 
 SESSION_INFO = LavaSession(username="johndoe1", name="John Doe")
 DNA = DNA()
-INITIALIZED = ["Agriculture","Food and Beverage","Services","Products","Healthcare","Open Entry"]
+INITIALIZED = ["Coaching & Advising","Workshops / Training","Online Tools"]
 DNA.interestedcolo = INITIALIZED
 DNA.db = database()
 DNA.qb = QuestionBaseInterface()
 DNA.currentquestion = DNA.qb.matchColo(INITIALIZED)
 SESSION_INFO.question = DNA.currentquestion.toQestion()
+
+
 
 
 ########################## Session Init Info Ends ##########################
@@ -29,9 +32,23 @@ def ajaxSubmit():
     :return: A serialized json object that contains the session information to be used in javascript
     """
 
-    postRequest = request.json or request.form  # Short circuit the data fetch
+    postRequest = request.json or request.form # Short circuit the data fetch
     print postRequest
-    DNA.answer(postRequest.getList(DNA.currentquestion.qid))
+    print postRequest.getlist('answer')
+    alist = eval("".join(postRequest.getlist('answer')))
+    if alist == []:
+        return json.dumps({"session_info": SESSION_INFO.toJson()})
+    DNA.answer(alist)
+    DNA.newQ()
+    print DNA.currentquestion
+    if DNA.currentquestion == -1 or DNA.currentquestion == "error":
+        print "error got"
+        SESSION_INFO.result = DNA.currentList
+        q = Question()
+        q.qid = "-1"
+        SESSION_INFO.question = q
+        return json.dumps({"session_info": SESSION_INFO.toJson()})
+    SESSION_INFO.question = DNA.currentquestion.toQestion()
     return json.dumps({"session_info": SESSION_INFO.toJson()})
 
 
@@ -42,9 +59,16 @@ def redirectSubmit():
 
     :return: The rendered new page that will be displayed, with relevant arguments provided
     """
-    postRequest = request.json or request.form
+    postRequest = request.json or request.form or request.args
     print postRequest
     return render_template('question.html', session_info=SESSION_INFO.toJson())
+
+@app.route("/finalresult", methods=['GET', 'POST'])
+def submitResult():
+
+    print SESSION_INFO.result
+    return render_template('finalresult.html', session_info=SESSION_INFO.toJson())
+
 
 
 @app.route("/")
@@ -60,4 +84,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5063)
