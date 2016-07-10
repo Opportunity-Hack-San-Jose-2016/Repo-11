@@ -1,33 +1,18 @@
-import random
-import string
+class Question:
 
-
-class Question(object):
-
-    def __init__(self, id="", text="", type="text", options=[]):
-        self.questionId = id if id != "" else self.random_id(6)
+    def __init__(self, qid="", text="", type="text", options=[]):
+        self.qid = qid
         self.questionText = text
         self.answerType = type
-        if type != "checkbox" or type != "radio":
+        if type not in ["checkbox", "radio", "dropdown"]:
             self.options = []
         else:
             self.options = options
         self.subquestions = []
 
-    @staticmethod
-    def random_id(size=6, chars=string.ascii_uppercase + string.digits):
-        """
-        Generate a random string id.
-
-        @param size: The desired length of the id
-        @param chars: The set of acceptable characters in the id
-        @return: The generated string format id
-        """
-        return ''.join(random.choice(chars) for _ in range(size))
-
     def toJson(self):
         return {
-            "id": self.questionId,
+            "id": self.qid,
             "text": self.questionText,
             "answer_type": self.answerType,
             "options": self.options,
