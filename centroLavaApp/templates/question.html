@@ -64,13 +64,33 @@
 				    Q1
 				  </div>
 				</div>
-				<form action="/centroInitialSubmit" method="post">
-					<div class="form-group">
-						<p class="lead">Please describe your challenge/problem and what do you need.</p>
-						<textarea class="form-control" rows="5" name="answerText"></textarea>
-					</div>	
-					<button type="submit" class="btn btn-default">Submit</button>
-				</form>
+				<!-- 		Question Forms 	 -->
+				<div class="container-fluid" id="forms">
+					<!-- 		Form Template		 -->
+					<form class="checkbox-form-group">
+						<!-- 		Checkbox From Group		 -->
+						<div class="form-group checkbox-form-group" id="checkboxFormGroup">
+							<p class="lead">What services do you need?</p>
+							<div class="checkbox text-left">
+							  <label>
+							    <input type="checkbox" value="option1" id="option1" class="answerCheckBox">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+							<div class="checkbox text-left">
+							  <label>
+							    <input type="checkbox" value="option2" id="option2" class="answerCheckBox">
+							    Option two is disabled
+							  </label>
+							</div>
+						</div>
+						<!-- 		End Checkbox From Group		 -->
+						<button type="button" class="btn btn-default submitButton">Submit</button>
+					</form>
+					<!-- 		End Form Template		 -->
+				</div>
+				<!-- 		End Question Forms 	 -->
+				
       </div>
 
     </div><!-- /.container -->
@@ -81,6 +101,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="static/js/utils.js"></script>
+    <script src="static/js/question.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

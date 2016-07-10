@@ -5,3 +5,19 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+
+.c-select {
+display: inline-block;
+    max-width: 100%;
+    -webkit-appearance: none;
+    padding: .375rem 1.75rem .375rem .75rem;
+    padding-right: .75rem\9;
+    color: #55595c;
+    vertical-align: middle;
+    background: #fff url("../../static/images/selectArrow.png") no-repeat right .75rem center;
+    background-image: none\9;
+    -webkit-background-size: 8px 10px;
+    background-size: 8px 10px;
+    border: 1px solid #ccc;
+    -moz-appearance: none;
+}
