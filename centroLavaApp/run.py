@@ -5,18 +5,27 @@ from datamodel import database
 from QuestionBaseInterface import QuestionBaseInterface
 from Question import Question
 app = Flask(__name__)
+app.secret_key = '5656798291'
+
 
 ############################ Session Init Info ############################
 
 
 SESSION_INFO = LavaSession(username="johndoe1", name="John Doe")
-DNA = DNA()
-INITIALIZED = ["Coaching & Advising","Workshops / Training","Online Tools"]
-DNA.interestedcolo = INITIALIZED
-DNA.db = database()
-DNA.qb = QuestionBaseInterface()
-DNA.currentquestion = DNA.qb.matchColo(INITIALIZED)
-SESSION_INFO.question = DNA.currentquestion.toQestion()
+dna = DNA()
+INITIALIZED = [
+      "Agriculture",
+      "Food and Beverage",
+      "Services",
+      "Products",
+      "Healthcare",
+      "Open Entry"
+    ]
+dna.interestedcolo = INITIALIZED
+dna.db = database()
+dna.qb = QuestionBaseInterface()
+dna.currentquestion = dna.qb.matchColo(INITIALIZED)
+SESSION_INFO.question = dna.currentquestion.toQestion()
 
 
 
@@ -38,17 +47,17 @@ def ajaxSubmit():
     alist = eval("".join(postRequest.getlist('answer')))
     if alist == []:
         return json.dumps({"session_info": SESSION_INFO.toJson()})
-    DNA.answer(alist)
-    DNA.newQ()
-    print DNA.currentquestion
-    if DNA.currentquestion == -1 or DNA.currentquestion == "error":
+    dna.answer(alist)
+    dna.newQ()
+    print dna.currentquestion
+    if dna.currentquestion == -1 or dna.currentquestion == "error":
         print "error got"
-        SESSION_INFO.result = DNA.currentList
+        SESSION_INFO.result = dna.currentList
         q = Question()
         q.qid = "-1"
         SESSION_INFO.question = q
         return json.dumps({"session_info": SESSION_INFO.toJson()})
-    SESSION_INFO.question = DNA.currentquestion.toQestion()
+    SESSION_INFO.question = dna.currentquestion.toQestion()
     return json.dumps({"session_info": SESSION_INFO.toJson()})
 
 
@@ -65,6 +74,7 @@ def redirectSubmit():
 
 @app.route("/finalresult", methods=['GET', 'POST'])
 def submitResult():
+
     print SESSION_INFO.result
     return render_template('finalresult.html', session_info=SESSION_INFO.toJson())
 
@@ -78,9 +88,19 @@ def index():
 
     :return: The rendered index page that will be displayed, with rele
     """
+    global SESSION_INFO
+    SESSION_INFO = LavaSession(username="johndoe1", name="John Doe")
+    global dna
+    dna = DNA()
+    dna.interestedcolo = INITIALIZED
+    dna.db = database()
+    dna.qb = QuestionBaseInterface()
+    dna.currentquestion = dna.qb.matchColo(INITIALIZED)
+    SESSION_INFO.question = dna.currentquestion.toQestion()
+    #session['sid'] = SESSION_INFO.sid
     print SESSION_INFO.toJson()
     return render_template('index.html', session_info=SESSION_INFO.toJson())
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5069)
+    app.run(host="0.0.0.0", port=5063)

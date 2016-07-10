@@ -33,8 +33,9 @@ class QuestionBaseInterface:
 
     def getQ(self, qid):
         for k, v in self.questionDict.items():
-            if v.iscolofilter == True and v.qid == str(qid):
+            if v.qid == str(qid):
                 return v
+
     def getcolums(self):
         listofcolo = []
         for k, v in self.questionDict.items():
