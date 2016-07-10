@@ -1,0 +1,28 @@
+{
+  "0": {
+    "rawstring": "Please Choose the industry of your business",
+    "cols": [
+      "Agriculture",
+      "Food and Beverage",
+      "Services",
+      "Products",
+      "Healthcare",
+      "Open Entry"
+    ],
+    "iscolfilter": true,
+    "potentialanswers": {
+      " a Service": [
+        "Services",
+        "Healthcare",
+        "Open Entry"
+      ],
+      "a Product": [
+        "Agriculture",
+        "Food and Beverage",
+        "Products"
+      ]
+
+    },
+    "isradio": true
+  }
+}
