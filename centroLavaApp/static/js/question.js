@@ -28,8 +28,8 @@ function checkStatus(){
 	$.post(
 		"/centroSubmitFollow",
 		{
-			'id': qid,
-			'answer': JSON.stringify(answerList)
+			'id': "-2",
+			'answer': "["init"]"
 		},
 		function(data) {
 			var question = data.session_info.question;
