@@ -7,6 +7,9 @@ $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
 });
 
+$("#forms").on('click', '.submitButton', function(){
+	submitForm();
+})
 
 function submitForm(){
 	// Initiate Variables With Form Content
@@ -63,17 +66,6 @@ function setQuestionForm(data) {
     width: "{0}%".format(progressBarWidth)
   }, 500);
 }
-
-$("#forms").on('click', '.submitButton', function(){
-	submitForm();
-	/*
-	addCheckboxForm("This is a checkbox question", ["checkbox1","checkbox2"], "/url");
-	addRadioForm("This is a radio question", ["option1","option2"], "/url");
-	addTextAreaForm("This is a text question", "/url");
-	addSelectForm("This is a dropdown question", ["list1","list2","list3"], "/url");
-*/
-	
-})
 
 function disablePreviousFormsAndRemoveSubmitButton() {
 	$('.current-form').removeClass('current-form');
@@ -170,7 +162,7 @@ function $formSelectHTML(options) {
 }
 
 function $buttonHTML(){
-	return $('<button type="button" class="btn btn-default submitButton">Submit</button>');
+	return $('<button type="button" class="btn btn-warning submitButton">Submit</button>');
 }
 
 function $formGroupHTML(){

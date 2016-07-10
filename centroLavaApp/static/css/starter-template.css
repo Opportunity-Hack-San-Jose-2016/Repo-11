@@ -38,10 +38,20 @@ footer .progress {
 	border-radius: 0px;
 	margin-bottom: 0px;
 	width: 100%;
+	height: 10px;
 }
 
 .progress-bar {
   -webkit-transition: none !important;
   transition: none !important;
   height: 10px;
+}
+
+.tag {
+	margin: 2px;
+}
+
+#initAnswerText{
+	width: 80%;
+  margin: auto;
 }
