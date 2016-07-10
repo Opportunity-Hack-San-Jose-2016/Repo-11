@@ -55,3 +55,11 @@ footer .progress {
 	width: 80%;
   margin: auto;
 }
+
+.list-inline{
+	margin-bottom: 0px;
+}
+
+footer .row{
+	padding: 20px 20px 0px 20px;
+}
