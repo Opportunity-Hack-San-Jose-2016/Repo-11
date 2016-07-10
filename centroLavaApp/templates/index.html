@@ -64,12 +64,23 @@
 				    Q1
 				  </div>
 				</div>
-				<form action="/centroInitialSubmit" method="post">
+				<form action="/centroInitialSubmit" method="post" id="initForm">
 					<div class="form-group">
 						<p class="lead">Please describe your challenge/problem and what do you need.</p>
-						<textarea class="form-control" rows="5" name="answerText"></textarea>
-					</div>	
-					<button type="submit" class="btn btn-default">Submit</button>
+						<textarea class="form-control" rows="5" name="answerText"></textarea>						
+					</div>
+					
+					<div class="form-group">
+						<a class="btn btn-primary" href="#" role="button">Topic1</a>
+						<a class="btn btn-primary" href="#" role="button">Topic2</a>
+						<a class="btn btn-primary" href="#" role="button">Topic1</a>
+						<a class="btn btn-primary" href="#" role="button">Topic2</a>
+						<a class="btn btn-primary" href="#" role="button">Topic1</a>
+						<a class="btn btn-primary" href="#" role="button">Topic2</a>
+						<a class="btn btn-primary" href="#" role="button">Topic1</a>
+						<a class="btn btn-primary" href="#" role="button">Topic2</a>
+					</div>
+					<button type="submit" class="btn btn-default" id="submitButton">Submit</button>
 				</form>
       </div>
 
@@ -81,6 +92,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="static/js/utils.js"></script>
+    <script src="static/js/index.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

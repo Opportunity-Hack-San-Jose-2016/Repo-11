@@ -22,11 +22,13 @@
 }
 */
 
+
+
 function submitForm(){
 	// Initiate Variables With Form Content
 	$.post(
-		"/questionForm",
-		$( "#questionForm" ).serialize(),
+		"/centroSubmitFollow",
+		$( ".current-from" ).serialize(),
 		function(data){
 			setQuestionForm(data);
 		},
@@ -47,10 +49,16 @@ function setQuestionForm(data) {
 
 $("#forms").on('click', '.submitButton', function(){
 	disablePreviousFormsAndRemoveSubmitButton();
+
+	
+	submitForm();
+	/*
 	addCheckboxForm("This is a checkbox question", ["checkbox1","checkbox2"], "/url");
-	adRadioForm("This is a radio question", ["option1","option2"], "/url");
+adRadioForm("This is a radio question", ["option1","option2"], "/url");
 	addTextAreaForm("This is a text question", "/url");
 	addSelectForm("This is a dropdown question", ["list1","list2","list3"], "/url");
+*/
+	
 })
 
 function disablePreviousFormsAndRemoveSubmitButton() {
