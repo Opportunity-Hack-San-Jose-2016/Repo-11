@@ -35,11 +35,11 @@ Finally, to run the server (**note**: you need Python 2.7, not 3.5 to do this):
 
 ```sh
 $ cd centroLavaApp
-$ python run.py
+$ python run.py [PORT]
 ...
 ```
 
-And eventually, you can open your browser (Chrome, Safari, Firefox recommended) and type in `localhost:5099a`. You can configure this port number later.
+And eventually, you can open your browser (Chrome, Safari, Firefox recommended) and type in `localhost:[PORT]`. You can configure this port number; if nothing is supplied, it will default to `5099`.
 
 ## Description
 

@@ -4,6 +4,7 @@ from DNA import DNA
 from datamodel import database
 from QuestionBaseInterface import QuestionBaseInterface
 from Question import Question
+import sys
 import nltk
 app = Flask(__name__)
 app.secret_key = '5656798291'
@@ -13,6 +14,7 @@ app.secret_key = '5656798291'
 
 
 SESSION_INFO = LavaSession(username="johndoe1", name="John Doe")
+PORT = 5099
 dna = DNA()
 INITIALIZED = [
       "Agriculture",
@@ -180,5 +182,6 @@ def key_words_filter(raw_txt):
 
 
 if __name__ == "__main__":
-
-    app.run(host="0.0.0.0", port=5099)
+    if len(sys.argv) > 1:
+        PORT = eval(sys.argv[1])
+    app.run(host="0.0.0.0", port=PORT)
