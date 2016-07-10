@@ -5,6 +5,7 @@ var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function() {
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
+    checkStatus();
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "'").replace(/&#34;/g, "\""));
 	if(SESSION_INFO.question.qid=="-1") {
 		redirectToStartPage();
@@ -12,6 +13,23 @@ $(document).ready(function() {
 		setQuestionForm(SESSION_INFO);
 	}
 });
+
+function checkStatus(){
+    $.post(
+        "/centroSubmitFollow",
+        {
+            'id': '-2',
+            'answer': '["init"]'
+        },
+        function(data) {
+            var question = data.session_info.question;
+            if(question.qid == "-1"){
+                redirectToStartPage();
+            }
+        },
+        "json"
+    );
+}
 
 $("#forms").on('click', '.submitButton', function() {
 	submitForm($(this));
