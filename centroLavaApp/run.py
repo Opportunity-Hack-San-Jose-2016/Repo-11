@@ -46,23 +46,34 @@ def ajaxSubmit():
     print postRequest
     print postRequest.getlist('answer')
     alist = eval("".join(postRequest.getlist('answer')))
-    if alist == []:
-        return json.dumps({"session_info": SESSION_INFO.toJson()})
-    if dna.currentquestion != -1:
-        dna.answer(alist)
-        dna.newQ()
-
-    if dna.currentquestion == -1 or dna.currentquestion == "error":
-        print "error got"
+    statusid =  postRequest.getlist('id')[0]
+    if statusid == "-2" and dna.currentquestion == -1:
         SESSION_INFO.result = dna.currentList
         q = Question()
         q.qid = "-1"
         SESSION_INFO.question = q
         SESSION_INFO.answerlist = dna.answerList
         return json.dumps({"session_info": SESSION_INFO.toJson()})
-    SESSION_INFO.question = dna.currentquestion.toQestion()
-    print SESSION_INFO.toJson()
-    return json.dumps({"session_info": SESSION_INFO.toJson()})
+    elif statusid != "-2":
+        if alist == []:
+            return json.dumps({"session_info": SESSION_INFO.toJson()})
+        if dna.currentquestion != -1:
+            dna.answer(alist)
+            dna.newQ()
+
+        if dna.currentquestion == -1 or dna.currentquestion == "error":
+            print "error got"
+            SESSION_INFO.result = dna.currentList
+            q = Question()
+            q.qid = "-1"
+            SESSION_INFO.question = q
+            SESSION_INFO.answerlist = dna.answerList
+            return json.dumps({"session_info": SESSION_INFO.toJson()})
+        SESSION_INFO.question = dna.currentquestion.toQestion()
+        print SESSION_INFO.toJson()
+        return json.dumps({"session_info": SESSION_INFO.toJson()})
+    else:
+        return json.dumps({"session_info": SESSION_INFO.toJson()})
 
 @app.route("/centroBackFollow", methods=['GET', 'POST'])
 def ajaxBack():
@@ -170,4 +181,4 @@ def key_words_filter(raw_txt):
 
 if __name__ == "__main__":
 
-    app.run(host="0.0.0.0", port=5025)
+    app.run(host="0.0.0.0", port=5099)
