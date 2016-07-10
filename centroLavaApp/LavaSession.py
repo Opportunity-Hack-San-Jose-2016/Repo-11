@@ -48,5 +48,5 @@ class LavaSession(object):
             "location": self.location,
             "callback": self.postCallback,
             "result": self.result,
-            "answerlist":self.answerlist
+            "answerlist": [ans for ans in self.answerlist if ans.lower() not in ["yes", "no"] and len(ans) > 2]
         }
