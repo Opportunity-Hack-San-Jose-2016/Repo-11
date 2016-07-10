@@ -47,17 +47,16 @@ function submitForm($submitButton) {
 	}else{
 		// BUG
 	}
-	console.log($currentForm);
+	console.log(qid);
 	if(answerList.length==0) {
 		$submitButton.addClass("btn-error");
-		$submitButton.addClass('disabled');
 		$('.alert').fadeIn();
 		console.log($('.alert'));
 	}else{
 		$.post(
 			"/centroSubmitFollow",
 			{
-				'id': "qid",
+				'id': qid,
 				'answer': JSON.stringify(answerList)
 			},
 			function(data) {
@@ -67,6 +66,20 @@ function submitForm($submitButton) {
 			"json"
 		);
 	}
+}
+
+function retrieveForm(retrieveButton) {
+	// ajax post 
+	$.post(
+		"/centroBackFollow",
+		{
+			'id': "retrieveButtonClicked",
+		},
+		function(data) {
+			retrieveFormHTML();
+		},
+		"json"
+	);
 }
 
 function setQuestionForm(data) {
@@ -158,7 +171,7 @@ function getSelectedcheckboxArray() {
 	return checkboxSelected;
 }
 
-function retrieveForm(retrieveButton) {
+function retrieveFormHTML(){
 	var $currentForm = $('.current-form');
 	$currentForm.fadeOut().remove();
 	var $lastForm = $('form').not('.current-form').last();
