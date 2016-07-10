@@ -43,6 +43,24 @@ class DNA:
             return
         if self.currentquestion.direct[self.answerList[-1]]!=-1:
             self.currentquestion = self.qb.getQ(self.currentquestion.direct[self.answerList[-1]])
+            self.checkAnswers()
+
+    def checkAnswers(self):
+
+        for k,v in  self.currentquestion.potentialanswers.items():
+            colflaglist = []
+            if self.currentquestion.iscolofilter:
+                flagList = []
+                for col in v:
+                    flagList.append(self.db.check_colum(col,"1"))
+                if not any(flagList):
+                    del self.currentquestion.potentialanswers[k]
+            else:
+                colflaglist.append(self.db.check_colum(v[0], k))
+            if not any(colflaglist) and not self.currentquestion.iscolofilter:
+                del self.currentquestion.potentialanswers[k]
+
+
 
 
     def get_col_by_entropy(self):

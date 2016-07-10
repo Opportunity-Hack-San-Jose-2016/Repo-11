@@ -52,6 +52,14 @@ class database:
             if single_data.get_data().get(col_name) not in col_value:
                 single_data.set_disable_true()
 
+    def check_colum(self, col_name, col_val):
+        current_data = self.get_raw_data()
+        flag = False
+        for single_data in current_data:
+            if single_data.get(col_name) == col_val:
+                flag = True
+        return flag
+
 
 a = database()
 
