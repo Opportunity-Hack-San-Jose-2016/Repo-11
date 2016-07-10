@@ -49,10 +49,17 @@ function submitForm(){
 	);
 }
 
-var progressBarWidth = 0;
-
 function setQuestionForm(data) {
 	var question = data.question;
+/* 	if(data.question.qid=="-1") { */
+	if(progressBarWidth==20) {
+		addCompleteForm();
+		updateProgressBar(100);
+		return;
+	}else{
+		progressBarWidth+=10
+		updateProgressBar(progressBarWidth);
+	}
 	switch(question.answer_type){
 		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, data.callback); break;
 		case "radio": addRadioForm(question.qid, question.text, question.options, data.callback); break;
@@ -61,19 +68,24 @@ function setQuestionForm(data) {
 		default: break; // BUG: shoudl never be here
 	}
 	$("html, body").animate({ scrollTop: $('.current-form').offset().top }, 1000);
-	progressBarWidth+=10;
+}
+
+var progressBarWidth = 0;
+function updateProgressBar(progress){
 	$(".progress-bar").animate({
-    width: "{0}%".format(progressBarWidth)
+    width: "{0}%".format(progress)
   }, 500);
-  if(progressBarWidth==100){
-	  addCompleteButt
-  }
 }
 
 function disablePreviousFormsAndRemoveSubmitButton() {
 	$('.current-form').removeClass('current-form');
 	$('.submitButton').remove();
 	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
+}
+
+function addCompleteForm(){
+	var $completeForm = $completeFormHTML();
+	$('#forms').append($completeForm);
 }
 
 function addCheckboxForm(qid, text, options, callback) {
@@ -166,6 +178,10 @@ function $formSelectHTML(options) {
 
 function $buttonHTML(){
 	return $('<button type="button" class="btn btn-warning submitButton">Submit</button>');
+}
+
+function $completeFormHTML(){
+	return $('<form action="/finalresult.html" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">Complete</button></div></form>');
 }
 
 function $formGroupHTML(){
