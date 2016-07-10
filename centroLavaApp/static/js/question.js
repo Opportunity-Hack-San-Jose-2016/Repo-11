@@ -1,56 +1,78 @@
-/*
-{
-   "session_info": {
-       "callback": "/centroSubmit",
-       "location": "Unknown",
-       "name": "John Doe",
-       "question": {
-           "answer_type": "checkbox",
-           "id": "8799KR",
-           "options": [
-               "Yes",
-               "No"
-           ],
-           "subquestions": [],
-           "text": "Are you U.S. citizen?"
-       },
-       "result": [],
-       "session_id": "MFMJRI",
-       "stage": 1,
-       "username": "johndoe1"
-   }
-}
-*/
+var CHECKBOX_FORM_CLASS = "checkbox-form";
+var RADIO_FORM_CLASS = "radio-form";
+var TEXT_FORM_CLASS = "text-form";
+var SELECT_FORM_CLASS = "select-form";
+
+$(document).ready(function(){
+/* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
+});
+
 
 function submitForm(){
 	// Initiate Variables With Form Content
+	// checkbox
+	var $currentForm = $('.current-form');
+	var qid = $currentForm.attr('qid');
+	var answerList = [];
+	if($currentForm.hasClass(CHECKBOX_FORM_CLASS)){
+		$.each($currentForm.find('input:checked'), function(){
+			answerList.push($(this).val());
+		});
+	}else if($currentForm.hasClass(RADIO_FORM_CLASS)){
+		$.each($currentForm.find('input:checked'), function(){
+			answerList.push($(this).val());
+		});
+	}else if($currentForm.hasClass(TEXT_FORM_CLASS)){
+		answerList.push($currentForm.find('.answerTextArea').val());
+	}else if($currentForm.hasClass(SELECT_FORM_CLASS)){
+		$.each($currentForm.find('option:selected'), function(){
+			answerList.push($(this).val());
+		});
+	}else{
+		// BUG
+	}
+	$('.current-form').hasClass(CHECKBOX_FORM_CLASS)
 	$.post(
-		"/questionForm",
-		$( "#questionForm" ).serialize(),
+		"/centroSubmitFollow",
+		{
+			'id': "qid",
+			'answer': JSON.stringify(answerList)
+		},
 		function(data){
-			setQuestionForm(data);
+			disablePreviousFormsAndRemoveSubmitButton();
+			setQuestionForm(data.session_info);
 		},
 		"json"
 	);
 }
 
+var progressBarWidth = 0;
+
 function setQuestionForm(data) {
 	var question = data.question;
 	switch(question.answer_type){
-		case "checkbox": addCheckboxForm(question.text, question.options, data.callback); break;
-		case "radio": adRadioForm(question.text, question.options, data.callback); break;
-		case "text": addTextAreaForm(question.text, data.callback); break;
-		case "select": addSelectForm(question.text, question.options, data.callback); break;
+		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, data.callback); break;
+		case "radio": addRadioForm(question.qid, question.text, question.options, data.callback); break;
+		case "text": addTextAreaForm(question.qid, question.text, data.callback); break;
+		case "select": addSelectForm(question.qid, question.text, question.options, data.callback); break;
 		default: break; // BUG: shoudl never be here
 	}
+	$("html, body").animate({ scrollTop: $('.current-form').offset().top }, 1000);
+	progressBarWidth+=10;
+	$(".progress-bar").animate({
+    width: "{0}%".format(progressBarWidth)
+  }, 500);
 }
 
 $("#forms").on('click', '.submitButton', function(){
-	disablePreviousFormsAndRemoveSubmitButton();
+	submitForm();
+	/*
 	addCheckboxForm("This is a checkbox question", ["checkbox1","checkbox2"], "/url");
-	adRadioForm("This is a radio question", ["option1","option2"], "/url");
+	addRadioForm("This is a radio question", ["option1","option2"], "/url");
 	addTextAreaForm("This is a text question", "/url");
 	addSelectForm("This is a dropdown question", ["list1","list2","list3"], "/url");
+*/
+	
 })
 
 function disablePreviousFormsAndRemoveSubmitButton() {
@@ -59,8 +81,8 @@ function disablePreviousFormsAndRemoveSubmitButton() {
 	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
 }
 
-function addCheckboxForm(text, options, callback) {
-	var $form = $formHTML(callback, "checkbox-form-group");
+function addCheckboxForm(qid, text, options, callback) {
+	var $form = $formHTML(callback, CHECKBOX_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
 	$.each(options, function(index, value){
@@ -70,8 +92,8 @@ function addCheckboxForm(text, options, callback) {
 	addNewForm($form);
 }
 
-function adRadioForm(text, options, callback) {
-	var $form = $formHTML(callback, "radio-form-group");
+function addRadioForm(qid, text, options, callback) {
+	var $form = $formHTML(callback, RADIO_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
 	$.each(options, function(index, value){
@@ -81,8 +103,8 @@ function adRadioForm(text, options, callback) {
 	addNewForm($form);
 }
 
-function addTextAreaForm(text, callback) {
-	var $form = $formHTML(callback, "text-form-group");
+function addTextAreaForm(qid, text, callback) {
+	var $form = $formHTML(callback, TEXT_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
 	$formGroup.append($textAreaHTML());
@@ -90,8 +112,8 @@ function addTextAreaForm(text, callback) {
 	addNewForm($form);
 }
 
-function addSelectForm(text, options, callback) {
-	var $form = $formHTML(callback, "radio-form-group");
+function addSelectForm(qid, text, options, callback) {
+	var $form = $formHTML(callback, SELECT_FORM_CLASS, qid);
 	var $formGroup = $formGroupHTML();
 	$formGroup.append($questionTitleHTML(text));
 	$formGroup.append($formSelectHTML(options));
@@ -109,9 +131,10 @@ function getSelectedcheckboxArray() {
 
 function addNewForm($form){
 	$form.addClass('current-form');
+	$form.attr('style','display:none;');
 	$form.append($buttonHTML());
 	$("#forms").append('<hr>');
-	$("#forms").append($form);
+	$form.appendTo($("#forms")).fadeIn();
 }
 
 function $checkBoxHTML(value, text) {
@@ -123,18 +146,18 @@ function $checkBoxHTML(value, text) {
 
 function $radioHTML(value, text) {
 	return $(('<div class="radio text-left"><label>'+
-									'<input type="radio" name="optionsRadios" value="{0}" class="answerCheckbox" checked>'+
+									'<input type="radio" name="optionsRadios" value="{0}" class="answerRadio">'+
 									'{1}'+
 									'</label></div>').format(value, text));
 }
 
 function $textAreaHTML() {
-	return $('<textarea class="form-control" rows="5" name="answerText"></textarea>');
+	return $('<textarea class="form-control answerTextArea" rows="5" name="answerText"></textarea>');
 }
 
 function $formSelectHTML(options) {
 	var $selectRowWrapper = $rowWrapperHTML()
-	var $select = $('<select class="c-select col-xs-12"></select>');
+	var $select = $('<select class="c-select col-xs-12 answerSelect"></select>');
 	$.each(options, function(index, value){
 		if(index==0){
 			$select.append($('<option selected value={0}>{0}</option>'.format(value)));
@@ -158,10 +181,11 @@ function $rowWrapperHTML(){
 	return $('<div class="row"></div>')
 }
 
-function $formHTML(action, formClasses){
-	return $('<form action="{0}" class="{1}">'.format(action, formClasses));
+function $formHTML(action, formClasses, qid){
+	return $('<form action="{0}" class="{1} qid="{2}"">'.format(action, formClasses, qid));
 }
 
 function $questionTitleHTML(text){
 	return $('<p class="lead">{0}</p>'.format(text));
 }
+

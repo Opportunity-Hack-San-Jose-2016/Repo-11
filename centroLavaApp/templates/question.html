@@ -57,19 +57,13 @@
     <div class="container">
 
       <div class="starter-template">
-	        <h1>Lava Progress</h1>
-        <div class="progress">
-				  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-				  aria-valuemin="0" aria-valuemax="100" style="width:10%">
-				    Q1
-				  </div>
-				</div>
+	      <h1>Lava Progress</h1>
 				<!-- 		Question Forms 	 -->
 				<div class="container-fluid" id="forms">
 					<!-- 		Form Template		 -->
-					<form class="checkbox-form-group">
+					<form class="checkbox-form current-form">
 						<!-- 		Checkbox From Group		 -->
-						<div class="form-group checkbox-form-group" id="checkboxFormGroup">
+						<div class="form-group">
 							<p class="lead">What services do you need?</p>
 							<div class="checkbox text-left">
 							  <label>
@@ -94,7 +88,15 @@
       </div>
 
     </div><!-- /.container -->
-
+    <footer class="footer">
+	    <div class="container">
+	      <div class="progress">
+				  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="0"
+				  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+				  </div>
+				</div>		    
+	    </div>
+    </footer>
     <br />
 
     <!-- Bootstrap core JavaScript
