@@ -17,7 +17,6 @@ DNA.qb = QuestionBaseInterface()
 DNA.currentquestion = DNA.qb.matchColo(INITIALIZED)
 SESSION_INFO.question = DNA.currentquestion.toQestion()
 
-
 ########################## Session Init Info Ends ##########################
 
 
@@ -60,8 +59,8 @@ def index():
 
     :return: The rendered index page that will be displayed, with rele
     """
-    print SESSION_INFO.toJson()
-    return render_template('index.html', session_info=SESSION_INFO.toJson())
+    print SESSION_INFO.toJson()["results"]
+    return render_template('finalresult.html', session_info=SESSION_INFO.toJson())
 
 
 if __name__ == "__main__":
