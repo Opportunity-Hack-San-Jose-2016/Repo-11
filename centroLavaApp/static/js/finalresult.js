@@ -2,9 +2,21 @@ $(document).ready(function() {
 
     var listView = true;
 
+    var results_json = JSON.parse(COMPANY_RESULTS.replace(/&#39;/g, "\""));
+    var success = results_json.length > 0;
+    var banner;
+
+    if (success) {
+        banner = $("#result-banner");
+        $("#result-banner").show();
+    } else {
+        banner = $("#result-banner-fail");
+        $("#result-banner-fail").show();
+    }
+
     /* Set a timeout for the result banner's display */
     setTimeout(function() {
-        $("#result-banner").slideUp();
+        banner.slideUp();
         $("#helpBtn").fadeIn();
     }, 700);
 
@@ -20,7 +32,16 @@ $(document).ready(function() {
         // var uluru = {lat: 36.398, lng: -122.03};
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        var markers = JSON.parse(COMPANY_RESULTS.replace(/&#39;/g, "\""));
+        var markers = results_json;
+        var user_answers = JSON.parse(USER_ANSWERS.replace(/&#39;/g, "\""));
+        var labelClasses = ["success", "warning", "info", "danger"];
+
+        for (var j = 0; j < user_answers.length; j++) {
+            var label = user_answers[j];
+            var labelStyle = labelClasses[j % labelClasses.length];
+            var newLabel = "<span class='label label-" + labelStyle + "'>" + label + "</span> &nbsp;";
+            $("#labelCollection").append($(newLabel));
+        }
 
         var infoWindow = new google.maps.InfoWindow(), marker, i;
 
