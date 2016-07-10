@@ -1,13 +1,21 @@
 from flask import Flask, render_template, request, json, session
 from LavaSession import LavaSession
-from Question import Question
-
+from DNA import DNA
+from datamodel import database
+from QuestionBaseInterface import QuestionBaseInterface
 app = Flask(__name__)
 
 ############################ Session Init Info ############################
 
 
 SESSION_INFO = LavaSession(username="johndoe1", name="John Doe")
+DNA = DNA()
+INITIALIZED = ["Agriculture","Food and Beverage","Services","Products","Healthcare","Open Entry"]
+DNA.interestedcolo = INITIALIZED
+DNA.db = database()
+DNA.qb = QuestionBaseInterface()
+DNA.currentquestion = DNA.qb.matchColo(INITIALIZED)
+SESSION_INFO.question = DNA.currentquestion.toQestion()
 
 
 ########################## Session Init Info Ends ##########################
@@ -20,7 +28,10 @@ def ajaxSubmit():
 
     :return: A serialized json object that contains the session information to be used in javascript
     """
+
     postRequest = request.json or request.form  # Short circuit the data fetch
+    print postRequest
+    DNA.answer(postRequest.getList(DNA.currentquestion.qid))
     return json.dumps({"session_info": SESSION_INFO.toJson()})
 
 
@@ -32,6 +43,7 @@ def redirectSubmit():
     :return: The rendered new page that will be displayed, with relevant arguments provided
     """
     postRequest = request.json or request.form
+    print postRequest
     return render_template('question.html', session_info=SESSION_INFO.toJson())
 
 
@@ -48,6 +60,7 @@ def index():
 
     :return: The rendered index page that will be displayed, with rele
     """
+    print SESSION_INFO.toJson()
     return render_template('index.html', session_info=SESSION_INFO.toJson())
 
 
