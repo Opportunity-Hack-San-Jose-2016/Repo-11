@@ -133,6 +133,7 @@ function $textAreaHTML() {
 }
 
 function $formSelectHTML(options) {
+	var $selectRowWrapper = $rowWrapperHTML()
 	var $select = $('<select class="c-select col-xs-12"></select>');
 	$.each(options, function(index, value){
 		if(index==0){
@@ -141,7 +142,8 @@ function $formSelectHTML(options) {
 			$select.append($('<option value={0}>{0}</option>'.format(value)));
 		}
 	});
-	return $select;
+	$selectRowWrapper.append($select)
+	return $selectRowWrapper;
 }
 
 function $buttonHTML(){
@@ -149,7 +151,11 @@ function $buttonHTML(){
 }
 
 function $formGroupHTML(){
-	return $('<div class="form-group row"></div>');
+	return $('<div class="form-group"></div>');
+}
+
+function $rowWrapperHTML(){
+	return $('<div class="row"></div>')
 }
 
 function $formHTML(action, formClasses){
