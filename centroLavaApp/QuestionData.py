@@ -26,7 +26,7 @@ class QuestionData(object):
         return question
 
     def answer(self, answerstrList):
-        if isradio:
+        if self.isradio:
             return self.potentialanswers[answerstrList]
         else:
             listofresp = []
