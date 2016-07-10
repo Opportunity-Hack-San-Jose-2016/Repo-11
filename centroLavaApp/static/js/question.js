@@ -4,7 +4,7 @@ var TEXT_FORM_CLASS = "text-form";
 var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function() {
-/* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
+	checkStatus()
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "'").replace(/&#34;/g, "\""));
 	if(SESSION_INFO.question.qid=="-1") {
 		redirectToStartPage();
@@ -94,8 +94,8 @@ function setQuestionForm(data) {
 	}
 	console.log(question);
 	switch(question.answer_type) {
-		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, data.callback); break;
-		case "radio": addRadioForm(question.qid, question.text, question.options, data.callback); break;
+		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, question.descriptions, data.callback); break;
+        case "radio": addRadioForm(question.qid, question.text, question.options, question.descriptions, data.callback); break;
 		case "text": addTextAreaForm(question.qid, question.text, data.callback); break;
 		case "select": addSelectForm(question.qid, question.text, question.options, data.callback); break;
 		default: break; // BUG: shoudl never be here
@@ -123,26 +123,26 @@ function addCompleteForm() {
 	$('#forms').append($completeForm);
 }
 
-function addCheckboxForm(qid, text, options, callback) {
-	var $form = $formHTML(callback, CHECKBOX_FORM_CLASS, qid);
-	var $formGroup = $formGroupHTML();
-	$formGroup.append($questionTitleHTML(text));
-	$.each(options, function(index, value) {
-		$formGroup.append($checkBoxHTML(value, value));
-	});
-	$form.append($formGroup);
-	addNewForm($form);
+function addCheckboxForm(qid, text, options, descriptions, callback) {
+  var $form = $formHTML(callback, CHECKBOX_FORM_CLASS, qid);
+  var $formGroup = $formGroupHTML();
+  $formGroup.append($questionTitleHTML(text));
+  $.each(options, function(index, value){
+      $formGroup.append($checkBoxHTML(value, value, descriptions[value]));
+  });
+  $form.append($formGroup);
+  addNewForm($form);
 }
 
-function addRadioForm(qid, text, options, callback) {
-	var $form = $formHTML(callback, RADIO_FORM_CLASS, qid);
-	var $formGroup = $formGroupHTML();
-	$formGroup.append($questionTitleHTML(text));
-	$.each(options, function(index, value) {
-		$formGroup.append($radioHTML(value, value));
-	});
-	$form.append($formGroup);
-	addNewForm($form);
+function addRadioForm(qid, text, options, descriptions, callback) {
+    var $form = $formHTML(callback, RADIO_FORM_CLASS, qid);
+    var $formGroup = $formGroupHTML();
+    $formGroup.append($questionTitleHTML(text));
+    $.each(options, function(index, value){
+        $formGroup.append($radioHTML(value, value, descriptions[value]));
+    });
+    $form.append($formGroup);
+    addNewForm($form);
 }
 
 function addTextAreaForm(qid, text, callback) {
@@ -196,18 +196,36 @@ function redirectToStartPage() {
 	window.location.replace("http://"+window.location.host);
 }
 
-function $checkBoxHTML(value, text) {
-	return $(('<div class="checkbox text-left"><label>'+
-									'<input type="checkbox" value="{0}" class="answerCheckbox" required>'+
-									'{1}'+
-									'</label></div>').format(value, text));
+
+function $checkBoxHTML(value, text, desc) {
+    if (desc != null && desc != undefined && desc != "") {
+        return $(('<div class="checkbox text-left"><label>' +
+        '<input type="checkbox" value="{0}" class="answerCheckbox" required>' +
+        '{1}' +
+        '</label><p class="text-muted" style="padding-left: 20px">{2}</p></div>').format(value, text, desc));
+    }
+    else {
+        return $(('<div class="checkbox text-left"><label>' +
+        '<input type="checkbox" value="{0}" class="answerCheckbox" required>' +
+        '{1}' +
+        '</label></div>').format(value, text));
+    }
 }
 
-function $radioHTML(value, text) {
-	return $(('<div class="radio text-left"><label>'+
-									'<input type="radio" name="optionsRadios" value="{0}" class="answerRadio" required>'+
-									'{1}'+
-									'</label></div>').format(value, text));
+function $radioHTML(value, text, desc) {
+    if(desc!=null && desc != undefined && desc != ""){
+        return $(('<div class="radio text-left"><label>'+
+        '<input type="radio" name="optionsRadios" value="{0}" class="answerRadio" required>'+
+        '{1}'+
+        '</label><p class="text-muted" style="padding-left: 20px">{2}</p></div>').format(value, text, desc));
+    }
+    else{
+        return $(('<div class="radio text-left"><label>'+
+        '<input type="radio" name="optionsRadios" value="{0}" class="answerRadio" required>'+
+        '{1}'+
+        '</label></div>').format(value, text));
+    }
+
 }
 
 function $textAreaHTML() {
