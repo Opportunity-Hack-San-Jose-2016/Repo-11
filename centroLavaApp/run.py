@@ -84,16 +84,14 @@ def redirectSubmit():
     """
     postRequest = request.json or request.form or request.args
     print postRequest
-<<<<<<< HEAD
+
     rawText = str(postRequest.items()[0][1])
     collist = key_words_filter(rawText)
     dna.db.fileter_cato(collist,0)
 
 
-    return render_template('question.html', session_info=SESSION_INFO.toJson())
-=======
+
     return render_template('question.html', session_info=json.dumps(SESSION_INFO.toJson()))
->>>>>>> Opportunity-Hack-San-Jose-2016/master
 
 @app.route("/finalresult", methods=['GET', 'POST'])
 def submitResult():
@@ -158,9 +156,5 @@ def key_words_filter(raw_txt):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    app.run(host="0.0.0.0", port=5065)
 
-=======
-    app.run(host="0.0.0.0", port=5071)
->>>>>>> Opportunity-Hack-San-Jose-2016/master
+    app.run(host="0.0.0.0", port=5065)
