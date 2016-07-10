@@ -5,6 +5,7 @@ var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
+	setQuestionForm(SESSION_INFO);
 });
 
 $("#forms").on('click', '.submitButton', function(){

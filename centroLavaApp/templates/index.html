@@ -59,9 +59,10 @@
       <div class="starter-template">
 	      <h1>Lava Progress</h1>
 	      <p class="lead">This is a short introduction to Centro Lava website. We help entrepreneurs understand the needs, address the requirements, and provide all available resources & services.</p>  
-				<form id="initForm" class="current-form" action="/centrosubmit">
+				<form id="initForm" class="current-form" action="/centrosubmit" method="POST">
 					<div class="form-group">
-						<textarea class="form-control answerTextArea" rows="7" name="answerText" id="initAnswerText" placeholder="If you have a dream but don't have the roadmap, tell us about your challenge/problem or what do you need."></textarea>
+						<input type="hidden" value="defaultQid" />
+						<textarea class="form-control answerTextArea" rows="7" name="answer[]" id="initAnswerText" placeholder="If you have a dream but don't have the roadmap, tell us about your challenge/problem or what do you need."></textarea>
 					</div>
 					<button type="submit" class="btn btn-default submitButton">Submit</button>
 				</form>
