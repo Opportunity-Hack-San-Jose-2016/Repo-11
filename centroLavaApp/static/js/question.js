@@ -51,8 +51,7 @@ function submitForm(){
 
 function setQuestionForm(data) {
 	var question = data.question;
-/* 	if(data.question.qid=="-1") { */
-	if(progressBarWidth==20) {
+	if(data.question.qid=="-1") {
 		addCompleteForm();
 		updateProgressBar(100);
 		return;
