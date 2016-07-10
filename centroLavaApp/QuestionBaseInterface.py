@@ -16,6 +16,7 @@ class QuestionBaseInterface:
                     qd.direct = v["nextq"]
                 else:
                     qd = QuestionData()
+                qd.descriptions = v["descriptions"]
                 qd.colos = v["cols"]
                 qd.isradio = v["isradio"]
                 qd.iscolofilter = v["iscolfilter"]

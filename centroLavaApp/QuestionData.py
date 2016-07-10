@@ -17,12 +17,14 @@ class QuestionData(object):
         self.iscolofilter = False
         self.qid = ""
         self.isradio = False
+        self.descriptions = {}
 
     def toQestion(self):
         type = "checkbox"
         if self.isradio:
             type = "radio"
         question = Question(qid=self.qid,text=self.rawstring,type=type,options=self.potentialanswers.keys())
+        question.descriptions = self.descriptions
         return question
 
     def answer(self, answerstrList):
