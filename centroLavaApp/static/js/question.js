@@ -43,20 +43,20 @@ $("#forms").on('click', '.retrieveButton', function() {
 })
 
 function checkStatus(){
-	$.post(
-		"/centroSubmitFollow",
-		{
-			'id': qid,
-			'answer': JSON.stringify(answerList)
-		},
-		function(data) {
-			var question = data.session_info.question;
-			if(question.qid == "-1"){
-				redirectToStartPage();
-			}
-		},
-		"json"
-	);
+    $.post(
+        "/centroSubmitFollow",
+        {
+            'id': '-2',
+            'answer': '["init"]'
+        },
+        function(data) {
+            var question = data.session_info.question;
+            if(question.qid == "-1"){
+                redirectToStartPage();
+            }
+        },
+        "json"
+    );
 }
 
 
