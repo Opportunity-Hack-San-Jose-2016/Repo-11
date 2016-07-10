@@ -41,10 +41,8 @@ class DNA:
         if len(self.currentList) <= 5:
             self.currentquestion = -1
             return
-        if self.currentquestion.iscolofilter and self.currentquestion.direct[self.answerList[-1]]!=-1:
+        if self.currentquestion.direct[self.answerList[-1]]!=-1:
             self.currentquestion = self.qb.getQ(self.currentquestion.direct[self.answerList[-1]])
-        else:
-            self.currentquestion = self.qb.matchColo([self.get_col_by_entropy()])
 
 
     def get_col_by_entropy(self):
@@ -68,6 +66,7 @@ class DNA:
                 max_entropy = current_entropy
                 max_col_name = col_name
         return max_col_name
+
 
 
 
