@@ -6,10 +6,11 @@ var SELECT_FORM_CLASS = "select-form";
 $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "\""));
-	console.log("ready:");
-	console.log(SESSION_INFO);
-	setQuestionForm(SESSION_INFO);
-	
+	if(SESSION_INFO.question.qid=="-1"){
+		redirectToStartPage();
+	}else{
+		setQuestionForm(SESSION_INFO);
+	}
 });
 
 $("#forms").on('click', '.submitButton', function(){
@@ -155,6 +156,10 @@ function addNewForm($form){
 	$form.append($buttonHTML());
 	$("#forms").append('<hr>');
 	$form.appendTo($("#forms")).fadeIn();
+}
+
+function redirectToStartPage(){
+	window.location.replace("http://"+window.location.host);
 }
 
 function $checkBoxHTML(value, text) {
