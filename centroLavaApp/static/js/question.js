@@ -65,6 +65,9 @@ function setQuestionForm(data) {
 	$(".progress-bar").animate({
     width: "{0}%".format(progressBarWidth)
   }, 500);
+  if(progressBarWidth==100){
+	  addCompleteButt
+  }
 }
 
 function disablePreviousFormsAndRemoveSubmitButton() {
