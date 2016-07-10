@@ -188,7 +188,7 @@ function addNewForm($form) {
 	$form.append($validationAlertHTML());
 	$form.append($retrieveLastButtonHTML());
 	$form.append($submitButtonHTML());
-	$("#forms").append('<hr>');
+	$form.append('<hr>');
 	$form.appendTo($("#forms")).fadeIn();
 }
 
