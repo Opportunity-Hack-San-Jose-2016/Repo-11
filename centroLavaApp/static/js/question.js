@@ -5,7 +5,7 @@ var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
-	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "\""));
+	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "'").replace(/&#34;/g, "\""));
 	console.log("ready:");
 	console.log(SESSION_INFO);
 	setQuestionForm(SESSION_INFO);

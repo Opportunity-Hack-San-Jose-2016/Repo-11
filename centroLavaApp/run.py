@@ -71,7 +71,7 @@ def redirectSubmit():
     """
     postRequest = request.json or request.form or request.args
     print postRequest
-    return render_template('question.html', session_info=SESSION_INFO.toJson())
+    return render_template('question.html', session_info=json.dumps(SESSION_INFO.toJson()))
 
 @app.route("/finalresult", methods=['GET', 'POST'])
 def submitResult():
@@ -104,4 +104,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5070)
+    app.run(host="0.0.0.0", port=5071)
