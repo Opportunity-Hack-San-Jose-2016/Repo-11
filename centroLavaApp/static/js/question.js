@@ -4,7 +4,7 @@ var TEXT_FORM_CLASS = "text-form";
 var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function() {
-	checkStatus()
+	checkStatus();
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "'").replace(/&#34;/g, "\""));
 	if(SESSION_INFO.question.qid=="-1") {
 		redirectToStartPage();
@@ -23,6 +23,24 @@ $("#forms").on('click', '.retrieveButton', function() {
 		redirectToStartPage();
 	}
 })
+
+function checkStatus(){
+	$.post(
+		"/centroSubmitFollow",
+		{
+			'id': qid,
+			'answer': JSON.stringify(answerList)
+		},
+		function(data) {
+			var question = data.session_info.question;
+			if(question.qid == "-1"){
+				redirectToStartPage();
+			}
+		},
+		"json"
+	);
+}
+
 
 function submitForm($submitButton) {
 	// Initiate Variables With Form Content
