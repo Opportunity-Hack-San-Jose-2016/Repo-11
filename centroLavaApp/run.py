@@ -49,15 +49,16 @@ def ajaxSubmit():
         return json.dumps({"session_info": SESSION_INFO.toJson()})
     dna.answer(alist)
     dna.newQ()
-    print dna.currentquestion
     if dna.currentquestion == -1 or dna.currentquestion == "error":
         print "error got"
         SESSION_INFO.result = dna.currentList
         q = Question()
         q.qid = "-1"
         SESSION_INFO.question = q
+        SESSION_INFO.answerlist = dna.answerList
         return json.dumps({"session_info": SESSION_INFO.toJson()})
     SESSION_INFO.question = dna.currentquestion.toQestion()
+    print SESSION_INFO.toJson()
     return json.dumps({"session_info": SESSION_INFO.toJson()})
 
 
@@ -74,7 +75,7 @@ def redirectSubmit():
 
 @app.route("/finalresult", methods=['GET', 'POST'])
 def submitResult():
-
+    print SESSION_INFO.answerlist
     print SESSION_INFO.result
     return render_template('finalresult.html', session_info=SESSION_INFO.toJson())
 

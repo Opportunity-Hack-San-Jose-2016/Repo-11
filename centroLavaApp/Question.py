@@ -4,6 +4,8 @@ class Question:
         self.qid = qid
         self.questionText = text
         self.answerType = type
+        self.descriptions = {}
+
         if type not in ["checkbox", "radio", "dropdown"]:
             self.options = []
         else:
@@ -16,5 +18,6 @@ class Question:
             "text": str(self.questionText),
             "answer_type": str(self.answerType),
             "options": [str(opt) for opt in self.options],
-            "subquestions": self.subquestions
+            "subquestions": self.subquestions,
+            "descriptions": self.descriptions
         }
