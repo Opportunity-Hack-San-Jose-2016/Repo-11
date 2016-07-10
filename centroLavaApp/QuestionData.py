@@ -27,9 +27,16 @@ class QuestionData(object):
 
     def answer(self, answerstrList):
         if self.isradio:
-            return self.potentialanswers[answerstrList]
+            return self.potentialanswers[answerstrList[0]]
         else:
             listofresp = []
             for ans in answerstrList:
-                listofresp.append(self.potentialanswers[ans])
+                for ans2 in self.potentialanswers[ans]:
+                    listofresp.append(ans2)
             return listofresp
+
+class CatoQuestionData(QuestionData):
+
+   def __init__(self):
+       QuestionData.__init__(self)
+       self.direct = {}

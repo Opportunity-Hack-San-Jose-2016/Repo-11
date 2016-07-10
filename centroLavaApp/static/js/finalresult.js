@@ -20,7 +20,7 @@ $(document).ready(function() {
         // var uluru = {lat: 36.398, lng: -122.03};
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        var markers = COMPANY_RESULTS;
+        var markers = JSON.parse(COMPANY_RESULTS.replace(/&#39;/g, "\""));
 
         var infoWindow = new google.maps.InfoWindow(), marker, i;
 
@@ -28,7 +28,7 @@ $(document).ready(function() {
 
         for( i = 0; i < markers.length; i++ ) {
             var companyInfo = markers[i];
-            infoWindowContent.push(formatContent(companyInfo["Organization Name"], ""));
+            infoWindowContent.push(formatContent(companyInfo, ""));
             var position = new google.maps.LatLng(companyInfo['Latitude'], companyInfo['Longitude']);
             bounds.extend(position);
             marker = new google.maps.Marker({
@@ -85,9 +85,9 @@ function formatContent(companyInfo, content) {
         'technology industry.';
 
     var contentString = '<div id="content">' +
-            '<h3><b>Website: </b>' + companyInfo["Website"] + '</h3>' +
-            '<h3><b>Phone: </b>' + companyInfo["Phone"] + '</h3>' +
-            '<h3><b>Address: </b>' + companyInfo["Full Address"] + '</h3>' + content
+            '<h4><b>Website: </b>' + companyInfo["Website"] + '</h4>' +
+            '<h4><b>Phone: </b>' + companyInfo["Phone"] + '</h4>' +
+            '<h4><b>Address: </b>' + companyInfo["Full Address"] + '</h4>' + content
 
     return contentString;
 }

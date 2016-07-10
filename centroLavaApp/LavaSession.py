@@ -24,6 +24,7 @@ class LavaSession(object):
         self.potentialProviders = []
         self.question = question
         self.postCallback = "/centroSubmit" if stage == 1 else "/centroSubmitFollow"
+        self.result = []
 
     @staticmethod
     def random_id(size=6, chars=string.ascii_uppercase + string.digits):
@@ -36,7 +37,7 @@ class LavaSession(object):
         """
         return ''.join(random.choice(chars) for _ in range(size))
 
-    def toJson(self, results=[]):
+    def toJson(self):
         return {
             "session_id": self.sid,
             "username": self.username,
@@ -45,5 +46,5 @@ class LavaSession(object):
             "question": self.question.toJson() if self.question else {},
             "location": self.location,
             "callback": self.postCallback,
-            "results": results
+            "result": self.result
         }

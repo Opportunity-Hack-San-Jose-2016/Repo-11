@@ -5,6 +5,7 @@ var SELECT_FORM_CLASS = "select-form";
 
 $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
+	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "\""));
 	setQuestionForm(SESSION_INFO);
 });
 
@@ -57,7 +58,7 @@ function setQuestionForm(data) {
 		updateProgressBar(100);
 		return;
 	}else{
-		progressBarWidth+=10
+		progressBarWidth+=10;
 		updateProgressBar(progressBarWidth);
 	}
 	switch(question.answer_type){
@@ -181,7 +182,7 @@ function $buttonHTML(){
 }
 
 function $completeFormHTML(){
-	return $('<form action="/finalresult.html" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">Complete</button></div></form>');
+	return $('<form action="/finalresult" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">Complete</button></div></form>');
 }
 
 function $formGroupHTML(){
@@ -193,7 +194,7 @@ function $rowWrapperHTML(){
 }
 
 function $formHTML(action, formClasses, qid){
-	return $('<form action="{0}" class="{1} qid="{2}"">'.format(action, formClasses, qid));
+	return $('<form action="{0}" class="{1}" qid="{2}">'.format(action, formClasses, qid));
 }
 
 function $questionTitleHTML(text){

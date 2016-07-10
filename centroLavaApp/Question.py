@@ -4,7 +4,7 @@ class Question:
         self.qid = qid
         self.questionText = text
         self.answerType = type
-        if type not in ["checkbox", "radio", "select"]:
+        if type not in ["checkbox", "radio", "dropdown"]:
             self.options = []
         else:
             self.options = options
@@ -12,9 +12,9 @@ class Question:
 
     def toJson(self):
         return {
-            "id": self.qid,
-            "text": self.questionText,
-            "answer_type": self.answerType,
-            "options": self.options,
+            "qid": str(self.qid),
+            "text": str(self.questionText),
+            "answer_type": str(self.answerType),
+            "options": [str(opt) for opt in self.options],
             "subquestions": self.subquestions
         }

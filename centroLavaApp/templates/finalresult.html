@@ -41,7 +41,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjrwnANNZAptaL2NQ8Kz7gfD4VP45xbsY"></script>
     <script src="/static/js/intro.js"></script>
     <script>
-        var COMPANY_RESULTS = "{{ session_info['results'] }}"
+        var COMPANY_RESULTS = "{{ session_info['result'] }}"
     </script>
     <script type="text/javascript" src="/static/js/finalresult.js"></script>
     <style>
@@ -116,20 +116,20 @@
                     <br />
                     <div id="listViewIterate">
                         {% set count = 1 %}
-                        {% for c in session_info["results"] %}
+                        {% for c in session_info["result"] %}
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-warning">
                                 <div class="panel-heading company-info" id="company{{ count }}" data-toggle="collapse" data-target="#collapse{{ count }}">
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <span><strong>Company: </strong>{{ c["Company"] }}</span>
+                                            <span><strong>Company: </strong>{{ c["Organization Name"] }}</span>
 
                                         </div>
                                         <div class="col-md-6" style="border-left: solid grey">
-                                            <span><strong>Location: </strong>{{ c["Location"] }}</span>
+                                            <span><strong>Location: </strong>{{ c["Full Address"] }}</span>
                                             <br />
-                                            <span><strong>Services: </strong>{{ c["Services"] }}</span>
+                                            <span><strong>Contact: </strong>{{ c["Phone"] }}</span>
                                         </div>
                                     </div>
                                 </div>
