@@ -6,14 +6,17 @@ var SELECT_FORM_CLASS = "select-form";
 $(document).ready(function(){
 /* 	window.onbeforeunload = function() { return "You work will be lost."; }; */
 	SESSION_INFO = JSON.parse(SESSION_INFO.replace(/&#39;/g, "\""));
+	console.log("ready:");
+	console.log(SESSION_INFO);
 	setQuestionForm(SESSION_INFO);
+	
 });
 
 $("#forms").on('click', '.submitButton', function(){
-	submitForm();
+	submitForm($(this));
 })
 
-function submitForm(){
+function submitForm($submitButton){
 	// Initiate Variables With Form Content
 	// checkbox
 	var $currentForm = $('.current-form');
@@ -36,19 +39,25 @@ function submitForm(){
 	}else{
 		// BUG
 	}
-	$('.current-form').hasClass(CHECKBOX_FORM_CLASS)
-	$.post(
-		"/centroSubmitFollow",
-		{
-			'id': "qid",
-			'answer': JSON.stringify(answerList)
-		},
-		function(data){
-			disablePreviousFormsAndRemoveSubmitButton();
-			setQuestionForm(data.session_info);
-		},
-		"json"
-	);
+	if(answerList.length==0){
+		$submitButton.addClass("btn-error");
+		$submitButton.addClass('.disabled');
+		$('.alert').fadeIn();
+		console.log($('.alert'));
+	}else{
+		$.post(
+			"/centroSubmitFollow",
+			{
+				'id': "qid",
+				'answer': JSON.stringify(answerList)
+			},
+			function(data){
+				disablePreviousFormsAndRemoveSubmitButton();
+				setQuestionForm(data.session_info);
+			},
+			"json"
+		);
+	}
 }
 
 function setQuestionForm(data) {
@@ -61,6 +70,7 @@ function setQuestionForm(data) {
 		progressBarWidth+=10;
 		updateProgressBar(progressBarWidth);
 	}
+	console.log(question);
 	switch(question.answer_type){
 		case "checkbox": addCheckboxForm(question.qid, question.text, question.options, data.callback); break;
 		case "radio": addRadioForm(question.qid, question.text, question.options, data.callback); break;
@@ -82,6 +92,7 @@ function disablePreviousFormsAndRemoveSubmitButton() {
 	$('.current-form').removeClass('current-form');
 	$('.submitButton').remove();
 	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
+	$('.alert').remove();
 }
 
 function addCompleteForm(){
@@ -140,6 +151,7 @@ function getSelectedcheckboxArray() {
 function addNewForm($form){
 	$form.addClass('current-form');
 	$form.attr('style','display:none;');
+	$form.append($validationAlertHTML());
 	$form.append($buttonHTML());
 	$("#forms").append('<hr>');
 	$form.appendTo($("#forms")).fadeIn();
@@ -147,20 +159,20 @@ function addNewForm($form){
 
 function $checkBoxHTML(value, text) {
 	return $(('<div class="checkbox text-left"><label>'+
-									'<input type="checkbox" value="{0}" class="answerCheckbox">'+
+									'<input type="checkbox" value="{0}" class="answerCheckbox" required>'+
 									'{1}'+
 									'</label></div>').format(value, text));
 }
 
 function $radioHTML(value, text) {
 	return $(('<div class="radio text-left"><label>'+
-									'<input type="radio" name="optionsRadios" value="{0}" class="answerRadio">'+
+									'<input type="radio" name="optionsRadios" value="{0}" class="answerRadio" required>'+
 									'{1}'+
 									'</label></div>').format(value, text));
 }
 
 function $textAreaHTML() {
-	return $('<textarea class="form-control answerTextArea" rows="5" name="answerText"></textarea>');
+	return $('<textarea class="form-control answerTextArea" rows="5" name="answerText" required></textarea>');
 }
 
 function $formSelectHTML(options) {
@@ -182,7 +194,7 @@ function $buttonHTML(){
 }
 
 function $completeFormHTML(){
-	return $('<form action="/finalresult" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">Complete</button></div></form>');
+	return $('<form action="/finalresult" method="post"><div class="form-group"><button type="submit" class="btn btn-success completeButton">See the result</button></div></form>');
 }
 
 function $formGroupHTML(){
@@ -194,10 +206,14 @@ function $rowWrapperHTML(){
 }
 
 function $formHTML(action, formClasses, qid){
-	return $('<form action="{0}" class="{1}" qid="{2}">'.format(action, formClasses, qid));
+	return $('<form action="{0}" class="{1}" qid="{2}" data-toggle="validator">'.format(action, formClasses, qid));
 }
 
 function $questionTitleHTML(text){
 	return $('<p class="lead">{0}</p>'.format(text));
+}
+
+function $validationAlertHTML(){
+	return $('<div class="alert alert-danger" style="display:none;">Please tell us something.</div>');
 }
 
