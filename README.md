@@ -39,7 +39,7 @@ $ python run.py
 ...
 ```
 
-And eventually, you can open your browser (Chrome, Safari, Firefox recommended) and type in `localhost:5025`. You can configure this port number later.
+And eventually, you can open your browser (Chrome, Safari, Firefox recommended) and type in `localhost:5099a`. You can configure this port number later.
 
 ## Description
 
