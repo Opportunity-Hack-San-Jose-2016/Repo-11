@@ -4,6 +4,7 @@ from DNA import DNA
 from datamodel import database
 from QuestionBaseInterface import QuestionBaseInterface
 from Question import Question
+import nltk
 app = Flask(__name__)
 app.secret_key = '5656798291'
 
@@ -47,8 +48,10 @@ def ajaxSubmit():
     alist = eval("".join(postRequest.getlist('answer')))
     if alist == []:
         return json.dumps({"session_info": SESSION_INFO.toJson()})
-    dna.answer(alist)
-    dna.newQ()
+    if dna.currentquestion != -1:
+        dna.answer(alist)
+        dna.newQ()
+
     if dna.currentquestion == -1 or dna.currentquestion == "error":
         print "error got"
         SESSION_INFO.result = dna.currentList
@@ -61,6 +64,20 @@ def ajaxSubmit():
     print SESSION_INFO.toJson()
     return json.dumps({"session_info": SESSION_INFO.toJson()})
 
+@app.route("/centroBackFollow", methods=['GET', 'POST'])
+def ajaxBack():
+    dna.db.restore_data(len(dna.answerList))
+
+    if len(dna.qb.askedq) != 0:
+        dna.answerList.pop(-1)
+        qbnow = dna.qb.askedq[-1]
+        print dna.qb.askedq
+        dna.qb.askedq.pop(-1)
+        dna.currentquestion = dna.qb.getQ(qbnow)
+        SESSION_INFO.question = dna.currentquestion.toQestion()
+    return json.dumps({"session_info": SESSION_INFO.toJson()})
+
+
 
 @app.route("/centrosubmit", methods=['GET', 'POST'])
 def redirectSubmit():
@@ -71,6 +88,22 @@ def redirectSubmit():
     """
     postRequest = request.json or request.form or request.args
     print postRequest
+
+    rawText = str(postRequest.items()[0][1])
+    collist = key_words_filter(rawText)
+    if len(collist) != 0:
+        dna.db.fileter_cato(collist,0)
+    if dna.currentquestion.qid == -1:
+        print "error got"
+        SESSION_INFO.result = dna.currentList
+        q = Question()
+        q.qid = "-1"
+        SESSION_INFO.question = q
+        SESSION_INFO.answerlist = dna.answerList
+
+
+
+
     return render_template('question.html', session_info=json.dumps(SESSION_INFO.toJson()))
 
 @app.route("/finalresult", methods=['GET', 'POST'])
@@ -102,6 +135,39 @@ def index():
     print SESSION_INFO.toJson()
     return render_template('index.html', session_info=SESSION_INFO.toJson())
 
+def key_words_filter(raw_txt):
+    key_words_mapping_list = {}
+    col_list = set()
+
+    with open('expand_keywords.txt', 'r') as file:
+        for line in file:
+            line = line.split("|")
+            map_words = set()
+            words = line[1].split(",")
+            for token in words:
+                map_words.add(token.strip().lower())
+            key_words_mapping_list[line[0]] = map_words
+
+    stopwords = nltk.corpus.stopwords.words('english') + ['.', ',', '?', '(', ')', ':', '"', '-', '{', '}', '\'', '--',
+                                           '\'s', '\'re', 'the', 'you']
+    stopwords = set(stopwords)
+
+    tokens = nltk.word_tokenize(raw_txt)
+
+    filtered_words = [word.lower() for word in tokens if word not in stopwords]
+    filtered_words = set(filtered_words)
+
+    for single_word in filtered_words:
+        for col_name, col_key_words in key_words_mapping_list.items():
+            if single_word in col_key_words:
+                print single_word
+                print col_name
+                print "************"
+                col_list.add(col_name)
+
+    return list(col_list)
+
 
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=5025)

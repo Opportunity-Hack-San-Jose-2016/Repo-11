@@ -30,10 +30,12 @@ class DNA:
             self.answerList.append(i)
         if self.currentquestion.iscolofilter:
             self.interestedcolo = self.currentquestion.answer(listofstr)
-            self.db.fileter_cato(self.interestedcolo)
+            currentStageNum = self.db.get_max_stage_num() + 1
+            self.db.fileter_cato(self.interestedcolo,currentStageNum)
         else:
             self.interestedcolo = self.currentquestion.colos
-            self.db.filter_col(self.interestedcolo[0], listofstr)
+            currentStageNum = self.db.get_max_stage_num() + 1
+            self.db.filter_col(self.interestedcolo[0], listofstr, currentStageNum)
         self.currentList = self.db.get_raw_data()
 
 
