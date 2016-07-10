@@ -35,6 +35,7 @@
       "Agriculture": "Such as jam production, groundnut processing, quail egg farming, mushroom farming and so on.",
       "Food and Beverage": "Such as fruit juice production, spicies production and so on.",
       "Services": "Such as mobile pet grooming, diaper delivery, mobile locksmith and so on.",
+      "Products": "Such as housing products, creative decoration products and so on.",
       "Healthcare": "Such as online diagnosis, doctor reservation and so on.",
       "Open Entry": "I haven't decided the industry of my business yet."
     },
@@ -42,6 +43,7 @@
       "Agriculture": 1,
       "Food and Beverage": 1,
       "Services": 1,
+      "Products": 1,
       "Healthcare": 1,
       "Open Entry": 1
     }
@@ -323,7 +325,7 @@
     }
   },
   "9": {
-    "rawstring": "We have different services that can provide flexible ways to access, do you prefer to access the service online or offline?",
+    "rawstring": "We have different services that can provide flexible ways to access, do you have easy access to Internet, or do you prefer to access the service offline?",
     "cols": [
       "Online Tools",
       "Coaching & Advising",
@@ -331,22 +333,22 @@
     ],
     "iscolfilter": true,
     "potentialanswers": {
-      "Online Tools": [
+      "I prefer Online Tools": [
         "Online Tools"
       ],
-      "Offline services": [
+      "I prefer Offline services": [
         "Coaching & Advising",
         "Workshops / Training"
       ]
     },
     "isradio": false,
     "descriptions": {
-      "Online Tools": "Online tools include online curricula, online videos, and online materials, etc.",
-      "Offline services": "We offer workshops / trainings in which you can interact and brainstorm with other entrepreneurs, we also have experts for 1:1 coaching & advising you with your problems."
+      "I prefer Online Tools": "Online tools include online curricula, online videos, and online materials, etc.",
+      "I prefer Offline services": "We offer workshops / trainings in which you can interact and brainstorm with other entrepreneurs, we also have experts for 1:1 coaching & advising you with your problems."
     },
     "nextq": {
-      "Online Tools": 11,
-      "Offline services": 10
+      "I prefer Online Tools": 11,
+      "I prefer Offline services": 10
     }
   },
   "10": {
