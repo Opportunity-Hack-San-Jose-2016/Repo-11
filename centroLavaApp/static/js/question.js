@@ -17,8 +17,8 @@ $("#forms").on('click', '.submitButton', function() {
 	submitForm($(this));
 })
 
-$("#forms").on('click', '.retriveButton', function() {
-	retriveForm($(this));
+$("#forms").on('click', '.retrieveButton', function() {
+	retrieveForm($(this));
 	if($('form').length==0) {
 		redirectToStartPage();
 	}
@@ -100,7 +100,7 @@ function updateProgressBar(progress) {
 function disablePreviousFormsAndRemoveSubmitButton() {
 	$('.current-form').removeClass('current-form');
 	$('.submitButton').remove();
-	$('.retriveButton').remove();
+	$('.retrieveButton').remove();
 	$('#forms').find('input, textarea, button, select').attr('disabled','disabled');
 	$('.alert').remove();
 }
@@ -158,14 +158,14 @@ function getSelectedcheckboxArray() {
 	return checkboxSelected;
 }
 
-function retriveForm(retriveButton) {
+function retrieveForm(retrieveButton) {
 	var $currentForm = $('.current-form');
 	$currentForm.fadeOut().remove();
 	var $lastForm = $('form').not('.current-form').last();
 	$lastForm.addClass('current-form');
 	$lastForm.find('input, textarea, button, select').removeAttr('disabled');
 	$lastForm.append($validationAlertHTML());
-	$lastForm.append($retriveLastButtonHTML());
+	$lastForm.append($retrieveLastButtonHTML());
 	$lastForm.append($submitButtonHTML());
 }
 
@@ -173,7 +173,7 @@ function addNewForm($form) {
 	$form.addClass('current-form');
 	$form.attr('style','display:none;');
 	$form.append($validationAlertHTML());
-	$form.append($retriveLastButtonHTML());
+	$form.append($retrieveLastButtonHTML());
 	$form.append($submitButtonHTML());
 	$("#forms").append('<hr>');
 	$form.appendTo($("#forms")).fadeIn();
@@ -219,8 +219,8 @@ function $submitButtonHTML() {
 	return $('<button type="button" class="btn btn-warning submitButton">Submit</button>');
 }
 
-function $retriveLastButtonHTML() {
-	return $('<button type="button" class="btn btn-default retriveButton">Retrive</button>');
+function $retrieveLastButtonHTML() {
+	return $('<button type="button" class="btn btn-default retrieveButton">Retrieve</button>');
 }
 
 function $completeFormHTML() {
