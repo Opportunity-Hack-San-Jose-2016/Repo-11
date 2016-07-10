@@ -16,7 +16,7 @@ Jia, Ruoying(Victoria)
 
 Gong, Xiao(Joanna)
 
-Akash, kashyap
+Akash, Kashyap
 
 ## How to contribute
 

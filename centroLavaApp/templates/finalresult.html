@@ -54,6 +54,16 @@
         #floatingWindow {
             position: fixed;
         }
+
+        .logo-image {
+            max-height: 100px;
+            width: auto;
+            height: auto;
+        }
+
+        h2 {
+            font-size: 35px;
+        }
     </style>
   </head>
 
@@ -123,7 +133,8 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <span><strong>Company: </strong>{{ c["Organization Name"] }}</span>
+                                            <h4><strong>{{ c["Organization Name"] }}</strong></h4>
+                                            <br />
 
                                         </div>
                                         <div class="col-md-6" style="border-left: solid grey">
@@ -135,8 +146,21 @@
                                 </div>
                                 <div id="collapse{{ count }}" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        <h4><b>Description</b></h4>
+                                        <h4>{{ c["Organization Name"] }}</h4>
+                                        {% if c["Image URL"] != "" %}
+                                            <img class="logo-image" src='{{ c["Image URL"] }}' alt="" />
+                                        {% else %}
+                                            <img class="logo-image" src="https://raw.githubusercontent.com/Opportunity-Hack-San-Jose-2016/Repo-11/master/lava.ico" alt="" />
 
+                                        {% endif %}
+                                        <h4><b>Services we provide: </b></h4>
+                                        <span>
+                                            {% for category in c %}
+                                                {% if c[category] == "1" %}
+                                                    <span class="badge">{{ category }}</span> &nbsp;
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
